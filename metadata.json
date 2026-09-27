@@ -1,0 +1,6 @@
+{
+  "name": "PeerDrop P2P - Szybki Transfer Plików i Linków w Sieci LAN",
+  "description": "Błyskawiczny, szyfrowany transfer plików i linków bez limitu wielkości między urządzeniami w sieci Wi-Fi i kablowej (LAN/Ethernet) z automatycznym odbiorem.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

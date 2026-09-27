@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sonar-wave {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.9;
+  }
+  60% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes blip-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+  }
+}
+
+.animate-radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.animate-sonar-1 {
+  animation: sonar-wave 3.2s cubic-bezier(0.1, 0.7, 0.3, 1) infinite;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.animate-sonar-2 {
+  animation: sonar-wave 3.2s cubic-bezier(0.1, 0.7, 0.3, 1) infinite 1.6s;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.animate-blip {
+  animation: blip-pulse 2.2s ease-in-out infinite;
+}
+
+.radar-sweep-cone {
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    transparent 280deg,
+    rgba(6, 182, 212, 0.02) 290deg,
+    rgba(6, 182, 212, 0.08) 330deg,
+    rgba(6, 182, 212, 0.25) 356deg,
+    rgba(56, 189, 248, 0.6) 359deg,
+    rgba(255, 255, 255, 0.95) 360deg
+  );
+}

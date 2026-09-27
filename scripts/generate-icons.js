@@ -1,0 +1,120 @@
+import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
+
+const iconSvg = `
+<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="110" fill="#020617"/>
+  <defs>
+    <linearGradient id="cyanGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="100" y1="100" x2="400" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#020617" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ambient Glow circle -->
+  <circle cx="256" cy="256" r="180" fill="url(#glowGrad)"/>
+
+  <!-- Infinity Ribbon Background Ring -->
+  <path
+    d="M170 180 C110 180 70 210 70 256 C70 302 110 332 170 332 C230 332 268 286 290 256 C312 226 350 180 410 180 C470 180 510 210 510 256 C510 302 470 332 410 332 C350 332 312 286 290 256 C268 226 230 180 170 180 Z"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="12"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    transform="scale(0.88) translate(35, 35)"
+  />
+
+  <!-- Main glowing cyan beam -->
+  <path
+    d="M150 200 C100 200 70 225 70 256 C70 287 100 312 150 312 C200 312 235 275 256 256"
+    fill="none"
+    stroke="url(#cyanGrad)"
+    stroke-width="16"
+    stroke-linecap="round"
+  />
+  <path
+    d="M256 256 C277 237 312 200 362 200 C412 200 442 225 442 256 C442 287 412 312 362 312"
+    fill="none"
+    stroke="url(#cyanGrad)"
+    stroke-width="16"
+    stroke-linecap="round"
+  />
+
+  <!-- Center Arrow / Beam Icon -->
+  <g transform="translate(256, 256)">
+    <!-- Central P2P Node Circle -->
+    <circle cx="0" cy="0" r="32" fill="#020617" stroke="#38bdf8" stroke-width="8"/>
+    <circle cx="0" cy="0" r="14" fill="#38bdf8"/>
+  </g>
+
+  <!-- Left node -->
+  <circle cx="150" cy="256" r="22" fill="#020617" stroke="#ffffff" stroke-width="6"/>
+  <circle cx="150" cy="256" r="8" fill="#38bdf8"/>
+
+  <!-- Right node -->
+  <circle cx="362" cy="256" r="22" fill="#020617" stroke="#ffffff" stroke-width="6"/>
+  <circle cx="362" cy="256" r="8" fill="#38bdf8"/>
+
+  <!-- Top send beacon -->
+  <path d="M256 120 L270 148 L242 148 Z" fill="#38bdf8"/>
+  <line x1="256" y1="156" x2="256" y2="180" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Bottom receive shield -->
+  <path d="M256 392 L242 364 L270 364 Z" fill="#38bdf8"/>
+  <line x1="256" y1="356" x2="256" y2="332" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
+</svg>
+`;
+
+// Maskable icon with 15% safe padding
+const maskableSvg = `
+<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#020617"/>
+  <g transform="scale(0.72) translate(100, 100)">
+    ${iconSvg.replace(/<svg[^>]*>/, '').replace('</svg>', '')}
+  </g>
+</svg>
+`;
+
+async function generate() {
+  const publicDir = path.resolve('public');
+  if (!fs.existsSync(publicDir)) {
+    fs.mkdirSync(publicDir, { recursive: true });
+  }
+
+  // 1. icon.svg
+  fs.writeFileSync(path.join(publicDir, 'icon.svg'), iconSvg);
+
+  // 2. 192x192 PNG
+  await sharp(Buffer.from(iconSvg))
+    .resize(192, 192)
+    .png()
+    .toFile(path.join(publicDir, 'pwa-192x192.png'));
+
+  // 3. 512x512 PNG
+  await sharp(Buffer.from(iconSvg))
+    .resize(512, 512)
+    .png()
+    .toFile(path.join(publicDir, 'pwa-512x512.png'));
+
+  // 4. maskable 512x512 PNG
+  await sharp(Buffer.from(maskableSvg))
+    .resize(512, 512)
+    .png()
+    .toFile(path.join(publicDir, 'pwa-maskable-512x512.png'));
+
+  // 5. apple-touch-icon.png 180x180
+  await sharp(Buffer.from(iconSvg))
+    .resize(180, 180)
+    .png()
+    .toFile(path.join(publicDir, 'apple-touch-icon.png'));
+
+  console.log('Successfully generated all PWA icons!');
+}
+
+generate().catch(console.error);

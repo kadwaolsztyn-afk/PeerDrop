@@ -1,0 +1,50 @@
+<svg viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="240" rx="20" fill="#020617"/>
+  
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- Infinity Ribbon -->
+    <path
+      d="M120 70 C80 70 50 90 50 120 C50 150 80 170 120 170 C160 170 185 140 200 120 C215 100 240 70 280 70 C320 70 350 90 350 120 C350 150 320 170 280 170 C240 170 215 140 200 120 C185 100 160 70 120 70 Z"
+      fill="none"
+      stroke="#ffffff"
+      stroke-width="7"
+    />
+    <!-- Inner Ribbon 3D Contour -->
+    <path
+      d="M120 84 C90 84 68 98 68 120 C68 142 90 156 120 156 C150 156 172 134 188 116 C204 98 226 84 262 84"
+      fill="none"
+      stroke="#38bdf8"
+      stroke-width="3.5"
+    />
+    <path
+      d="M214 126 C230 144 250 156 280 156 C310 156 332 142 332 120 C332 98 310 84 280 84"
+      fill="none"
+      stroke="#38bdf8"
+      stroke-width="3.5"
+    />
+
+    <!-- Left Geometric Crystal / Diamond Prism -->
+    <g transform="translate(38, 75)">
+      <polygon points="32,0 64,22 64,68 32,90 0,68 0,22" fill="#020617" stroke="#ffffff" stroke-width="4.5" />
+      <line x1="32" y1="0" x2="32" y2="90" stroke="#38bdf8" stroke-width="3" />
+      <polygon points="32,22 64,22 32,45 0,22" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+      <polygon points="32,68 64,68 32,45 0,68" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+    </g>
+
+    <!-- Right Shield with Download Arrow -->
+    <g transform="translate(254, 90)">
+      <path
+        d="M26 4 C38 4 48 10 48 14 C48 34 38 48 26 56 C14 48 4 34 4 14 C4 10 14 4 26 4 Z"
+        fill="#020617"
+        stroke="#ffffff"
+        stroke-width="4.5"
+      />
+      <line x1="26" y1="14" x2="26" y2="38" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" />
+      <polyline points="18,30 26,38 34,30" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </g>
+
+  <!-- Typography -->
+  <text x="200" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="900" font-size="32" fill="#ffffff" letter-spacing="3">PEER<tspan fill="#38bdf8">DROP</tspan></text>
+</svg>
