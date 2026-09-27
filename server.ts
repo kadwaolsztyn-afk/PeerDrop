@@ -5,6 +5,7 @@ import express from 'express';
 import http from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
 import path from 'path';
+import fs from 'fs';
 import os from 'os';
 import { fileURLToPath } from 'url';
 
@@ -577,10 +578,25 @@ wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
   });
 });
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 async function startServer() {
-  if (process.env.NODE_ENV !== 'production') {
+  const distPath = path.resolve(__dirname, 'dist');
+  const indexPath = path.resolve(distPath, 'index.html');
+  const hasDist = fs.existsSync(indexPath);
+
+  if (process.env.NODE_ENV === 'production' && hasDist) {
+    console.log(`Serving static production build from ${distPath}`);
+    app.use(express.static(distPath));
+    app.get('*', (_req, res) => {
+      res.sendFile(indexPath);
+    });
+  } else {
+    if (process.env.NODE_ENV === 'production') {
+      console.warn(
+        `Production mode requested but ${indexPath} was not found. Falling back to on-the-fly Vite middleware.`
+      );
+    }
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: {
@@ -590,11 +606,6 @@ async function startServer() {
       appType: 'spa',
     });
     app.use(vite.middlewares);
-  } else {
-    app.use(express.static(path.resolve(__dirname, 'dist')));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-    });
   }
 
   server.listen(PORT, '0.0.0.0', () => {
